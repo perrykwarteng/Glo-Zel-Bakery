@@ -11,12 +11,13 @@ import cakeBread from "../../asset/cakebread.jpg";
 interface BreadItem {
   id: number;
   name: string;
-  price: number;
+  prices: number[];
   image: string;
 }
 
 interface CartItem extends BreadItem {
   qty: number;
+  price: number; // Selected price
 }
 
 interface CustomerInfo {
@@ -25,17 +26,15 @@ interface CustomerInfo {
   location: string;
 }
 
-type BulkQuantities = {
-  [id: number]: number;
-};
+type BulkQuantities = { [id: number]: number };
 
-const breadMenu = [
-  { id: 1, name: "Wheat Bread", price: 20, image: wheatBread },
-  { id: 2, name: "Sugar Bread", price: 20, image: sugarBread },
-  { id: 3, name: "Brown Bread", price: 20, image: brownBread },
-  { id: 4, name: "Tea Bread", price: 20, image: teaBread },
-  { id: 5, name: "Butter Bread", price: 20, image: butterBread },
-  { id: 6, name: "Cake Bread", price: 20, image: cakeBread },
+const breadMenu: BreadItem[] = [
+  { id: 1, name: "Wheat Bread", prices: [20, 30], image: wheatBread },
+  { id: 2, name: "Sugar Bread", prices: [20, 30], image: sugarBread },
+  { id: 3, name: "Brown Bread", prices: [20, 30], image: brownBread },
+  { id: 4, name: "Tea Bread", prices: [20, 30], image: teaBread },
+  { id: 5, name: "Butter Bread", prices: [20, 30], image: butterBread },
+  { id: 6, name: "Cake Bread", prices: [20, 30], image: cakeBread },
 ];
 
 export default function Order() {
@@ -47,24 +46,38 @@ export default function Order() {
   });
   const [showCheckout, setShowCheckout] = useState(false);
   const [bulkQuantities, setBulkQuantities] = useState<BulkQuantities>({});
+  const [selectedPrices, setSelectedPrices] = useState<{
+    [id: number]: number;
+  }>({});
 
   const updateQuantity = (id: number, value: string): void => {
     setBulkQuantities({ ...bulkQuantities, [id]: parseInt(value) || 0 });
   };
 
+  const handlePriceChange = (id: number, price: number): void => {
+    setSelectedPrices({ ...selectedPrices, [id]: price });
+  };
+
   const addBulkToCart = (): void => {
     const updatedCart = [...cart];
+
     breadMenu.forEach((bread) => {
       const qty = bulkQuantities[bread.id];
+      const selectedPrice = selectedPrices[bread.id] ?? bread.prices[0];
+
       if (qty > 0) {
-        const existing = updatedCart.find((item) => item.id === bread.id);
+        const existing = updatedCart.find(
+          (item) => item.id === bread.id && item.price === selectedPrice
+        );
+
         if (existing) {
           existing.qty += qty;
         } else {
-          updatedCart.push({ ...bread, qty });
+          updatedCart.push({ ...bread, qty, price: selectedPrice });
         }
       }
     });
+
     setCart(updatedCart);
     setBulkQuantities({});
   };
@@ -102,7 +115,19 @@ export default function Order() {
                   <h2 className="text-xl text-[#f59e0b] font-semibold mb-2">
                     {bread.name}
                   </h2>
-                  <p className="text-[#021729] mb-2">GHS {bread.price}</p>
+                  <select
+                    value={selectedPrices[bread.id] ?? bread.prices[0]}
+                    onChange={(e) =>
+                      handlePriceChange(bread.id, parseInt(e.target.value))
+                    }
+                    className="w-full p-2 mb-2 border rounded-md"
+                  >
+                    {bread.prices.map((price) => (
+                      <option key={price} value={price}>
+                        GHS {price}
+                      </option>
+                    ))}
+                  </select>
                   <input
                     type="number"
                     min="0"
@@ -127,13 +152,13 @@ export default function Order() {
             <p className="text-gray-600">Cart is empty.</p>
           ) : (
             <ul className="space-y-2">
-              {cart.map((item) => (
+              {cart.map((item, index) => (
                 <li
-                  key={item.id}
+                  key={`${item.id}-${item.price}-${index}`}
                   className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm"
                 >
                   <span>
-                    {item.name} x {item.qty}
+                    {item.name} ({item.price}) x {item.qty}
                   </span>
                   <span>GHS {item.price * item.qty}</span>
                 </li>
@@ -152,10 +177,13 @@ export default function Order() {
         <div className="bg-white p-6 rounded-xl shadow-md">
           <h2 className="text-2xl font-bold mb-4">🧾 Order Summary</h2>
           <ul className="mb-4">
-            {cart.map((item) => (
-              <li key={item.id} className="flex justify-between">
+            {cart.map((item, index) => (
+              <li
+                key={`${item.id}-${item.price}-${index}`}
+                className="flex justify-between"
+              >
                 <span>
-                  {item.name} x {item.qty}
+                  {item.name} ({item.price}) x {item.qty}
                 </span>
                 <span>GHS {item.price * item.qty}</span>
               </li>
