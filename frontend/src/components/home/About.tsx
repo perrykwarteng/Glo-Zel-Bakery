@@ -1,6 +1,6 @@
 import React from "react";
 
-import profile from "../../asset/Profile.jpg";
+import profile from "../../../asset/Profile.jpg";
 const About: React.FC = () => {
   return (
     <section id="about" className="py-16 bg-white">

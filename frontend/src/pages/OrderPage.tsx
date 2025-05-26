@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Card, CardContent } from "../../src/components/ui/card";
 
-import wheatBread from "../asset/WheatBread.jpg";
-import sugarBread from "../asset/SugarBread.jpg";
-import brownBread from "../asset/brownbread.jpg";
-import teaBread from "../asset/teaBread.jpg";
-import butterBread from "../asset/butterbread.jpg";
-import cakeBread from "../asset/cakebread.jpg";
+import wheatBread from "../../asset/WheatBread.jpg";
+import sugarBread from "../../asset/SugarBread.jpg";
+import brownBread from "../../asset/brownbread.jpg";
+import teaBread from "../../asset/teaBread.jpg";
+import butterBread from "../../asset/butterbread.jpg";
+import cakeBread from "../../asset/cakebread.jpg";
 
 interface BreadItem {
   id: number;

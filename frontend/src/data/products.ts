@@ -1,11 +1,11 @@
 import { BreadProduct } from "../types/product";
 
-import wheatBread from "../asset/WheatBread.jpg";
-import sugarBread from "../asset/SugarBread.jpg";
-import brownBread from "../asset/brownbread.jpg";
-import teaBread from "../asset/teaBread.jpg";
-import butterBread from "../asset/butterbread.jpg";
-import cakeBread from "../asset/cakebread.jpg";
+import wheatBread from "../../asset/WheatBread.jpg";
+import sugarBread from "../../asset/SugarBread.jpg";
+import brownBread from "../../asset/brownbread.jpg";
+import teaBread from "../../asset/teaBread.jpg";
+import butterBread from "../../asset/butterbread.jpg";
+import cakeBread from "../../asset/cakebread.jpg";
 export const products: BreadProduct[] = [
   {
     id: 1,

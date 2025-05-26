@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 
-import logo from "../../asset/Logo.png";
+import Logo from "../../../asset/Logo.png";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -37,7 +37,7 @@ const Header: React.FC = () => {
       <div className="container-custom flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center ">
-          <img className="w-[150px]" src={logo} alt="main logo" />
+          <img className="w-[150px]" src={Logo} alt="main logo" />
         </Link>
 
         {/* Desktop Navigation */}

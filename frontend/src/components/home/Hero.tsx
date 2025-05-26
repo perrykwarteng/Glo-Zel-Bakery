@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Wheat, ChefHat, Clock } from "lucide-react";
-import Bread from "../../asset/bread.png";
+import Bread from "../../../asset/bread.png";
 
 const Hero: React.FC = () => {
   return (

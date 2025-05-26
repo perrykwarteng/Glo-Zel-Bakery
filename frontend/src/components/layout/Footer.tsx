@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Facebook, Instagram, Twitter } from "lucide-react";
-import logo from "../../asset/Logo.png";
+
+import Logo from "../../../asset/Logo.png";
 
 const Footer: React.FC = () => {
   return (
@@ -11,7 +12,7 @@ const Footer: React.FC = () => {
           {/* Logo and brief description */}
           <div className="col-span-1 md:col-span-1">
             <div className="flex items-center mb-4">
-              <img className="w-[130px]" src={logo} alt="main logo" />
+              <img className="w-[130px]" src={Logo} alt="main logo" />
             </div>
             <p className="text-sm text-[#021729] leading-relaxed mb-4">
               Crafting delicious artisan bread with time-honored techniques
@@ -112,3 +113,5 @@ const Footer: React.FC = () => {
 };
 
 export default Footer;
+
+/_/;
