@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Facebook, Instagram, Twitter } from "lucide-react";
 
-import Logo from "../../../asset/Logo.png";
+import Logo from "../../../asset/logo.png";
 
 const Footer: React.FC = () => {
   return (
