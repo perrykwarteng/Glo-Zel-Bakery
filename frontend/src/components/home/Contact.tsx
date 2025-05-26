@@ -21,13 +21,11 @@ const Contact: React.FC = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
       setFormState({ name: "", email: "", message: "" });
 
-      // Reset success message after 5 seconds
       setTimeout(() => {
         setIsSubmitted(false);
       }, 5000);
@@ -42,7 +40,6 @@ const Contact: React.FC = () => {
         </h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Contact Form */}
           <div className="bg-white p-8 rounded-lg shadow-md">
             {isSubmitted ? (
               <div className="text-center py-8 animate-rise">
@@ -125,7 +122,6 @@ const Contact: React.FC = () => {
             )}
           </div>
 
-          {/* Contact Information */}
           <div>
             <p className="text-brown-700 mb-8 leading-relaxed">
               Have questions about our products, orders, or just want to say

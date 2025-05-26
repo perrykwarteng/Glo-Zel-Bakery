@@ -9,7 +9,6 @@ const Footer: React.FC = () => {
     <footer className="bg-[#ffffff] text-wheat-100 pt-12 pb-6">
       <div className="container-custom">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Logo and brief description */}
           <div className="col-span-1 md:col-span-1">
             <div className="flex items-center mb-4">
               <img className="w-[130px]" src={Logo} alt="main logo" />
@@ -40,7 +39,6 @@ const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Quick Links */}
           <div className="col-span-1">
             <h3 className="text-[#021729] font-display text-lg mb-4">
               Quick Links
@@ -59,7 +57,6 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Customer Service */}
           <div className="col-span-1">
             <h3 className="text-[#021729] font-display text-lg mb-4">
               Customer Service
@@ -83,7 +80,6 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Contact & Hours */}
           <div className="col-span-1">
             <h3 className="text-[#021729] font-display text-lg mb-4">
               Visit Us
@@ -103,7 +99,7 @@ const Footer: React.FC = () => {
 
         <div className="border-t border-[#021729] mt-8 pt-6">
           <p className="text-[#021729] text-sm text-center">
-            &copy; {new Date().getFullYear()} Artisan Bakery. All rights
+            &copy; {new Date().getFullYear()} Glo-Zel Bakery. All rights
             reserved.
           </p>
         </div>
@@ -113,5 +109,3 @@ const Footer: React.FC = () => {
 };
 
 export default Footer;
-
-/_/;

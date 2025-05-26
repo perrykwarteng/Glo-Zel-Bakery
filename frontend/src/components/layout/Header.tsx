@@ -9,12 +9,10 @@ const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
 
-  // Close mobile menu when changing routes
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location]);
 
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -35,12 +33,10 @@ const Header: React.FC = () => {
       }`}
     >
       <div className="container-custom flex items-center justify-between">
-        {/* Logo */}
         <Link to="/" className="flex items-center ">
           <img className="w-[150px]" src={Logo} alt="main logo" />
         </Link>
 
-        {/* Desktop Navigation */}
         <nav className="w-full hidden md:flex items-center justify-end space-x-8">
           <Link
             to="/"
@@ -56,7 +52,6 @@ const Header: React.FC = () => {
           </Link>
         </nav>
 
-        {/* Cart & Mobile Menu Toggle */}
         <div className="flex items-center">
           {" "}
           <button
@@ -73,7 +68,6 @@ const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
       {isMenuOpen && (
         <div className="md:hidden animate-fadeIn bg-white">
           <nav className="container-custom py-4 flex flex-col space-y-4">

@@ -11,7 +11,7 @@ const About: React.FC = () => {
               Our Baking Philosophy
             </h2>
             <p className="text-[#021729] mb-4 leading-relaxed">
-              At Artisan Bakery, we believe that great bread requires time,
+              At Glo-Zel Bakery, we believe that great bread requires time,
               patience, and respect for tradition. Our master bakers have spent
               years perfecting their craft, creating bread that honors
               centuries-old techniques while innovating for modern palates.
