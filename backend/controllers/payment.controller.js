@@ -26,7 +26,7 @@ export const initiate = async (req, res) => {
         phone: customer.phone,
         amount: total * 100,
         email: customer.email,
-        callback_url: "http://localhost:5173/verifyPayment",
+        callback_url: "https://glo-zel-bakery.vercel.app/verifyPayment",
         items,
         metadata: {
           custom_fields: [
