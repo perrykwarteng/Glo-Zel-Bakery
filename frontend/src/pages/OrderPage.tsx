@@ -59,6 +59,7 @@ export default function Order() {
     location: "",
   });
   const [showCheckout, setShowCheckout] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [bulkQuantities, setBulkQuantities] = useState<BulkQuantities>({});
   const [selectedPrices, setSelectedPrices] = useState<{
     [id: number]: number;
@@ -126,9 +127,10 @@ export default function Order() {
       total,
     };
 
+    setLoading(true);
     try {
       const response = await fetch(
-        "https://glo-zel-bakery.onrender.com/api/payments/initiate-payment",
+        `https://glo-zel-bakery.onrender.com/api/payments/initiate-payment`,
         {
           method: "POST",
           headers: {
@@ -152,6 +154,8 @@ export default function Order() {
     } catch (error: any) {
       console.error("Error placing order:", error);
       alert(`Failed to place order: ${error.message || "Unknown error"}`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -286,8 +290,12 @@ export default function Order() {
             />
           </div>
 
-          <button onClick={placeOrder} className="btn-primary mt-6 w-full">
-            Place Order
+          <button
+            onClick={placeOrder}
+            className="btn-primary mt-6 w-full"
+            disabled={loading}
+          >
+            {loading ? "Processing..." : "Place Order"}
           </button>
         </div>
       )}
