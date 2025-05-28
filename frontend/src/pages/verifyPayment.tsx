@@ -24,7 +24,7 @@ const VerifyPayment: React.FC = () => {
   const verifyPayment = async (reference: string) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/payments/verify/${reference}`
+        `https://glo-zel-bakery.onrender.com/api/payments/verify/${reference}`
       );
       const result = await response.json();
 

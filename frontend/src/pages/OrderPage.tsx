@@ -128,7 +128,7 @@ export default function Order() {
 
     try {
       const response = await fetch(
-        "http://localhost:8000/api/payments/initiate-payment",
+        "https://glo-zel-bakery.onrender.com/api/payments/initiate-payment",
         {
           method: "POST",
           headers: {
