@@ -43,9 +43,9 @@ type BulkQuantities = { [id: number]: number };
 
 const breadMenu: BreadItem[] = [
   { id: 1, name: "Wheat Bread", prices: [20, 30], image: wheatBread },
-  { id: 2, name: "Sugar Bread", prices: [20, 30], image: sugarBread },
-  { id: 3, name: "Brown Bread", prices: [20, 30], image: brownBread },
-  { id: 4, name: "Tea Bread", prices: [20, 30], image: teaBread },
+  { id: 2, name: "Sugar Bread", prices: [20, 30], image: teaBread },
+  { id: 3, name: "Brown Bread", prices: [20, 30], image: sugarBread },
+  { id: 4, name: "Tea Bread", prices: [20, 30], image: brownBread },
   { id: 5, name: "Butter Bread", prices: [20, 30], image: butterBread },
   { id: 6, name: "Cake Bread", prices: [20, 30], image: cakeBread },
 ];
