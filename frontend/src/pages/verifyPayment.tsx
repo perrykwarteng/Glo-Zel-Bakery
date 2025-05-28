@@ -56,7 +56,7 @@ export default function VerifyPayment() {
               Thank you! Your payment was completed successfully.
             </p>
             <p className="text-gray-600 mb-6">
-              One of ourcustomer representatives will contact you shortly to
+              One of our customer representatives will contact you shortly to
               confirm your order.
             </p>
           </>
