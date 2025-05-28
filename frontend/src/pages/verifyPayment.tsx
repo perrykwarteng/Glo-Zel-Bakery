@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CheckCircle, XCircle } from "lucide-react";
 
-const VerifyPayment: React.FC = () => {
+export default function VerifyPayment() {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -90,6 +90,4 @@ const VerifyPayment: React.FC = () => {
       </div>
     </div>
   );
-};
-
-export default VerifyPayment;
+}
