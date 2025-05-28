@@ -54,8 +54,12 @@ const VerifyPayment: React.FC = () => {
           <>
             <CheckCircle className="text-green-500 w-16 h-16 mx-auto mb-4" />
             <h1 className="text-2xl font-bold mb-2">Payment Successful 🎉</h1>
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-600">
               Thank you! Your payment was completed successfully.
+            </p>
+            <p className="text-gray-600 mb-6">
+              One of ourcustomer representatives will contact you shortly to
+              confirm your order.
             </p>
           </>
         )}
