@@ -17,13 +17,26 @@ interface BreadItem {
 
 interface CartItem extends BreadItem {
   qty: number;
-  price: number; // Selected price
+  price: number;
 }
 
 interface CustomerInfo {
   name: string;
+  email: string;
   phone: string;
   location: string;
+}
+
+interface PaystackPaymentResponse {
+  status: string;
+  message: string;
+  data: {
+    data?: {
+      authorization_url: string;
+      access_code: string;
+      reference: string;
+    };
+  };
 }
 
 type BulkQuantities = { [id: number]: number };
@@ -41,6 +54,7 @@ export default function Order() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [customer, setCustomer] = useState<CustomerInfo>({
     name: "",
+    email: "",
     phone: "",
     location: "",
   });
@@ -93,6 +107,52 @@ export default function Order() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setCustomer({ ...customer, [e.target.name]: e.target.value });
+  };
+
+  const placeOrder = async () => {
+    if (!customer.name || !customer.phone || !customer.location) {
+      alert("Please fill in all customer details.");
+      return;
+    }
+
+    const orderDetails = {
+      customer,
+      items: cart.map((item) => ({
+        name: item.name,
+        quantity: item.qty,
+        unitPrice: selectedPrices[item.id] || item.prices[0],
+        totalPrice: (selectedPrices[item.id] || item.prices[0]) * item.qty,
+      })),
+      total,
+    };
+
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/payments/initiate-payment",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(orderDetails),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not OK");
+      }
+
+      const result: PaystackPaymentResponse = await response.json();
+
+      if (result.status === "success" && result.data.data?.authorization_url) {
+        window.location.assign(result.data.data?.authorization_url);
+      }
+
+      console.log(result?.data?.data?.authorization_url);
+    } catch (error: any) {
+      console.error("Error placing order:", error);
+      alert(`Failed to place order: ${error.message || "Unknown error"}`);
+    }
   };
 
   return (
@@ -201,6 +261,14 @@ export default function Order() {
               className="w-full p-3 border rounded-xl"
             />
             <input
+              type="email"
+              name="email"
+              placeholder="Your Email"
+              value={customer.email}
+              onChange={handleChange}
+              className="w-full p-3 border rounded-xl"
+            />
+            <input
               type="tel"
               name="phone"
               placeholder="Phone Number"
@@ -218,7 +286,9 @@ export default function Order() {
             />
           </div>
 
-          <button className="btn-primary mt-6 w-full">Place Order</button>
+          <button onClick={placeOrder} className="btn-primary mt-6 w-full">
+            Place Order
+          </button>
         </div>
       )}
     </div>
