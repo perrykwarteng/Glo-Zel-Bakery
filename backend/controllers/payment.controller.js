@@ -26,7 +26,7 @@ export const initiate = async (req, res) => {
         phone: customer.phone,
         amount: total * 100,
         email: customer.email,
-        callback_url: "https://glo-zel-bakery.vercel.app/verify",
+        callback_url: "http://localhost:5173/verify",
         items,
         metadata: {
           custom_fields: [
@@ -101,8 +101,6 @@ export const verify = async (req, res) => {
       { new: true }
     );
 
-    console.log(order.orderId);
-
     if (!order) {
       throw new Error("Order not found");
     }
@@ -115,10 +113,21 @@ export const verify = async (req, res) => {
         },
       }
     );
-
     const result = response.data;
 
     if (result.status === true) {
+      const existingTransaction = await Transaction.findOne({
+        transactionId: result.data.id,
+      });
+
+      if (existingTransaction) {
+        return res.status(200).json({
+          status: "success",
+          message: "Transaction already verified",
+          data: existingTransaction,
+        });
+      }
+
       const newTransaction = new Transaction({
         transactionId: result.data.id,
         orderId: order.orderId,
@@ -129,7 +138,6 @@ export const verify = async (req, res) => {
         amount: result.data.amount / 100,
         status: order.status,
       });
-
       await newTransaction.save();
 
       return res.status(200).json({

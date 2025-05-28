@@ -16,10 +16,8 @@ export default function VerifyPayment() {
 
     if (reference) {
       verifyPayment(reference);
-    } else {
-      setStatus("error");
     }
-  }, [location.search]);
+  }, []);
 
   const verifyPayment = async (reference: string) => {
     try {
