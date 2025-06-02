@@ -1,12 +1,3 @@
-export interface BreadProduct {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  featured: boolean
-}
-
 // Common types used throughout the application
 
 export interface Product {
@@ -19,30 +10,38 @@ export interface Product {
   description?: string;
 }
 
+export interface Customer {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  address?: string;
+  orderCount: number;
+}
+
 export interface OrderItem {
-  productId: string;
-  productName: string;
+  name: string;
   quantity: number;
   unitPrice: number;
 }
 
 export interface Order {
-  id: string;
-  customerId: string;
+  orderId: string;
   customerName: string;
-  items: OrderItem[];
-  total: number;
-  status: 'pending' | 'processing' | 'completed' | 'cancelled';
+  customerId: string;
   createdAt: string;
   deliveryDate?: string;
+  status: boolean;
+  total: number;
+  items: OrderItem[];
 }
 
 export interface Transaction {
   id: string;
   orderId: string;
   amount: number;
-  method: 'cash' | 'card' | 'transfer';
-  status: 'pending' | 'completed' | 'refunded';
+  method: "cash" | "card" | "transfer";
+  status: "pending" | "completed" | "refunded";
   date: string;
 }
 
@@ -60,4 +59,4 @@ export interface ProductSales {
   revenue: number;
 }
 
-export type TimeRange = 'today' | 'week' | 'month' | 'year';
+export type TimeRange = "today" | "week" | "month" | "year";
