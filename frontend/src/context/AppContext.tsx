@@ -68,7 +68,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/orders/all-orders");
+        const res = await fetch(
+          "https://glo-zel-bakery.onrender.com/api/orders/all-orders"
+        );
         if (!res.ok) throw new Error("Failed to fetch orders");
         const data: Order[] = await res.json();
         setAllOrders(data);
