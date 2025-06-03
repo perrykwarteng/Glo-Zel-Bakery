@@ -24,12 +24,6 @@ const DashboardSummaryCards: React.FC = () => {
       icon: <TrendingUp size={20} />,
       color: "bg-amber-500",
     },
-    {
-      title: "Pending Orders",
-      value: dashboardSummary.pendingOrders,
-      icon: <Clock size={20} />,
-      color: "bg-purple-500",
-    },
   ];
 
   return (
