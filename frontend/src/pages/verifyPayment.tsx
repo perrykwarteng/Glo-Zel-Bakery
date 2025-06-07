@@ -38,7 +38,7 @@ export default function VerifyPayment() {
   };
 
   const goHome = () => {
-    navigate("/order");
+    navigate("/track-order");
   };
 
   return (
@@ -83,7 +83,7 @@ export default function VerifyPayment() {
         )}
 
         <button onClick={goHome} className="btn-primary">
-          Go to Order
+          Your Orders
         </button>
       </div>
     </div>
