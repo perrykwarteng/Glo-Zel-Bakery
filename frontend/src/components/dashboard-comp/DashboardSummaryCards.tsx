@@ -1,6 +1,6 @@
 import React from "react";
 import { useAppContext } from "../../context/AppContext";
-import { ShoppingCart, DollarSign, TrendingUp, Clock } from "lucide-react";
+import { ShoppingCart, DollarSign, TrendingUp } from "lucide-react";
 
 const DashboardSummaryCards: React.FC = () => {
   const { dashboardSummary } = useAppContext();

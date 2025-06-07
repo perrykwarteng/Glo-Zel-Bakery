@@ -50,6 +50,12 @@ const Header: React.FC = () => {
           >
             Order Here
           </Link>
+          <Link
+            to="/track-order"
+            className="text-sec hover:text-brown-900 font-medium transition"
+          >
+            Your Orders
+          </Link>
         </nav>
 
         <div className="flex items-center">
@@ -82,6 +88,12 @@ const Header: React.FC = () => {
               className="text-sec hover:text-brown-900 font-medium py-2 transition"
             >
               Order Here
+            </Link>
+            <Link
+              to="/track-order"
+              className="text-sec hover:text-brown-900 font-medium transition"
+            >
+              Your Orders
             </Link>
           </nav>
         </div>

@@ -11,7 +11,6 @@ import cakeBread from "../../asset/cakebread.jpg";
 interface BreadItem {
   id: number;
   name: string;
-  prices: number[];
   image: string;
 }
 
@@ -39,19 +38,20 @@ interface PaystackPaymentResponse {
   };
 }
 
-type BulkQuantities = { [id: number]: number };
+const BREAD_PRICE = 25;
 
 const breadMenu: BreadItem[] = [
-  { id: 1, name: "Wheat Bread", prices: [20, 30], image: wheatBread },
-  { id: 2, name: "Sugar Bread", prices: [20, 30], image: teaBread },
-  { id: 3, name: "Brown Bread", prices: [20, 30], image: sugarBread },
-  { id: 4, name: "Tea Bread", prices: [20, 30], image: brownBread },
-  { id: 5, name: "Butter Bread", prices: [20, 30], image: butterBread },
-  { id: 6, name: "Cake Bread", prices: [20, 30], image: cakeBread },
+  { id: 1, name: "Wheat Bread", image: wheatBread },
+  { id: 2, name: "Sugar Bread", image: sugarBread },
+  { id: 3, name: "Brown Bread", image: brownBread },
+  { id: 4, name: "Tea Bread", image: teaBread },
+  { id: 5, name: "Butter Bread", image: butterBread },
+  { id: 6, name: "Cake Bread", image: cakeBread },
 ];
 
 export default function Order() {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [quantities, setQuantities] = useState<{ [id: number]: number }>({});
   const [customer, setCustomer] = useState<CustomerInfo>({
     name: "",
     email: "",
@@ -60,53 +60,50 @@ export default function Order() {
   });
   const [showCheckout, setShowCheckout] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [bulkQuantities, setBulkQuantities] = useState<BulkQuantities>({});
-  const [selectedPrices, setSelectedPrices] = useState<{
-    [id: number]: number;
-  }>({});
 
-  const updateQuantity = (id: number, value: string): void => {
-    setBulkQuantities({ ...bulkQuantities, [id]: parseInt(value) || 0 });
+  const updateQuantity = (id: number, value: string) => {
+    const qty = parseInt(value);
+    setQuantities((prev) => ({
+      ...prev,
+      [id]: isNaN(qty) || qty < 0 ? 0 : qty,
+    }));
   };
 
-  const handlePriceChange = (id: number, price: number): void => {
-    setSelectedPrices({ ...selectedPrices, [id]: price });
-  };
+  const addToCart = (bread: BreadItem) => {
+    const qty = quantities[bread.id] || 0;
+    if (qty <= 0) {
+      alert("Please enter a quantity greater than zero.");
+      return;
+    }
 
-  const addBulkToCart = (): void => {
-    const updatedCart = [...cart];
+    setCart((prevCart) => {
+      const existingIndex = prevCart.findIndex(
+        (item) => item.id === bread.id && item.price === BREAD_PRICE
+      );
 
-    breadMenu.forEach((bread) => {
-      const qty = bulkQuantities[bread.id];
-      const selectedPrice = selectedPrices[bread.id] ?? bread.prices[0];
-
-      if (qty > 0) {
-        const existing = updatedCart.find(
-          (item) => item.id === bread.id && item.price === selectedPrice
-        );
-
-        if (existing) {
-          existing.qty += qty;
-        } else {
-          updatedCart.push({ ...bread, qty, price: selectedPrice });
-        }
+      if (existingIndex !== -1) {
+        const updatedCart = [...prevCart];
+        updatedCart[existingIndex].qty += qty;
+        return updatedCart;
+      } else {
+        return [...prevCart, { ...bread, qty, price: BREAD_PRICE }];
       }
     });
 
-    setCart(updatedCart);
-    setBulkQuantities({});
+    setQuantities((prev) => ({ ...prev, [bread.id]: 0 }));
   };
 
-  const total: number = cart.reduce(
-    (acc, item) => acc + item.price * item.qty,
-    0
-  );
+  const total = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
 
-  const handleCheckout = (): void => {
+  const handleCheckout = () => {
+    if (cart.length === 0) {
+      alert("Your cart is empty.");
+      return;
+    }
     setShowCheckout(true);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCustomer({ ...customer, [e.target.name]: e.target.value });
   };
 
@@ -121,8 +118,8 @@ export default function Order() {
       items: cart.map((item) => ({
         name: item.name,
         quantity: item.qty,
-        unitPrice: selectedPrices[item.id] || item.prices[0],
-        totalPrice: (selectedPrices[item.id] || item.prices[0]) * item.qty,
+        unitPrice: item.price,
+        totalPrice: item.price * item.qty,
       })),
       total,
     };
@@ -145,14 +142,27 @@ export default function Order() {
       }
 
       const result: PaystackPaymentResponse = await response.json();
+      const ref = result.data.data?.reference;
 
-      if (result.status === "success" && result.data.data?.authorization_url) {
-        window.location.assign(result.data.data?.authorization_url);
+      if (ref) {
+        // Get current refs from localStorage
+        const existingRefs = JSON.parse(
+          localStorage.getItem("paymentRefs") || "[]"
+        );
+
+        // Avoid duplicates
+        if (!existingRefs.includes(ref)) {
+          existingRefs.push(ref);
+          localStorage.setItem("paymentRefs", JSON.stringify(existingRefs));
+        }
       }
 
-      console.log(result?.data?.data?.authorization_url);
+      if (result.status === "success" && result.data.data?.authorization_url) {
+        window.location.assign(result.data.data.authorization_url);
+      } else {
+        alert("Payment initialization failed.");
+      }
     } catch (error: any) {
-      console.error("Error placing order:", error);
       alert(`Failed to place order: ${error.message || "Unknown error"}`);
     } finally {
       setLoading(false);
@@ -179,36 +189,31 @@ export default function Order() {
                   <h2 className="text-xl text-[#f59e0b] font-semibold mb-2">
                     {bread.name}
                   </h2>
-                  <select
-                    value={selectedPrices[bread.id] ?? bread.prices[0]}
-                    onChange={(e) =>
-                      handlePriceChange(bread.id, parseInt(e.target.value))
-                    }
-                    className="w-full p-2 mb-2 border rounded-md"
-                  >
-                    {bread.prices.map((price) => (
-                      <option key={price} value={price}>
-                        GHS {price}
-                      </option>
-                    ))}
-                  </select>
+                  <p className="mb-2 font-bold">GHS {BREAD_PRICE}</p>
                   <input
                     type="number"
                     min="0"
-                    value={bulkQuantities[bread.id] || ""}
-                    onChange={(e) => updateQuantity(bread.id, e.target.value)}
+                    step="1"
+                    value={quantities[bread.id] ?? ""}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (/^\d*$/.test(val)) {
+                        updateQuantity(bread.id, val);
+                      }
+                    }}
                     placeholder="Qty"
-                    className="w-full p-2 mb-2 border rounded-md"
+                    className="w-full p-2 mb-4 border rounded-md"
                   />
+
+                  <button
+                    onClick={() => addToCart(bread)}
+                    className="w-full bg-[#f59e0b] text-white font-semibold py-2 rounded-md hover:bg-[#d97706] transition"
+                  >
+                    Add to Cart
+                  </button>
                 </CardContent>
               </Card>
             ))}
-          </div>
-
-          <div className="text-right mb-8">
-            <button className="btn-primary" onClick={addBulkToCart}>
-              Add Bulk to Cart
-            </button>
           </div>
 
           <h2 className="text-2xl font-bold mb-4">🛒 Your Cart</h2>
@@ -222,7 +227,7 @@ export default function Order() {
                   className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm"
                 >
                   <span>
-                    {item.name} ({item.price}) x {item.qty}
+                    {item.name} (GHS {item.price}) x {item.qty}
                   </span>
                   <span>GHS {item.price * item.qty}</span>
                 </li>
@@ -247,7 +252,7 @@ export default function Order() {
                 className="flex justify-between"
               >
                 <span>
-                  {item.name} ({item.price}) x {item.qty}
+                  {item.name} (GHS {item.price}) x {item.qty}
                 </span>
                 <span>GHS {item.price * item.qty}</span>
               </li>

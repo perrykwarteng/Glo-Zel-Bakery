@@ -1,6 +1,6 @@
 import React from "react";
 import { useAppContext } from "../../context/AppContext";
-import { LayoutDashboard, ShoppingCart, X } from "lucide-react";
+import { CreditCard, LayoutDashboard, ShoppingCart, X } from "lucide-react";
 import Logo from "../../../asset/logo.png";
 
 interface SidebarProps {
@@ -27,13 +27,13 @@ const Sidebar: React.FC<SidebarProps> = ({
       icon: <LayoutDashboard size={20} />,
     },
     { id: "orders", label: "Orders", icon: <ShoppingCart size={20} /> },
+    {
+      id: "transactions",
+      label: "Transactions",
+      icon: <CreditCard size={20} />,
+    },
     // { id: "customers", label: "Customers", icon: <Users size={20} /> },
     // { id: "inventory", label: "Inventory", icon: <Database size={20} /> },
-    // {
-    //   id: "transactions",
-    //   label: "Transactions",
-    //   icon: <CreditCard size={20} />,
-    // },
     // { id: "analytics", label: "Analytics", icon: <BarChart size={20} /> },
     // { id: "settings", label: "Settings", icon: <Settings size={20} /> },
   ];

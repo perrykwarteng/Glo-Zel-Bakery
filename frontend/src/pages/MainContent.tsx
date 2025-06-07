@@ -2,6 +2,7 @@ import React from "react";
 import { useAppContext } from "../context/AppContext";
 import Dashboard from "./Dashboard";
 import Orders from "./Orders";
+import Transaction from "./Transaction";
 
 const MainContent: React.FC = () => {
   const { activePage } = useAppContext();
@@ -30,16 +31,10 @@ const MainContent: React.FC = () => {
       //       </p>
       //     </div>
       //   );
-      // case "transactions":
-      //   return (
-      //     <div className="p-6 bg-white rounded-lg shadow-sm">
-      //       <h2 className="text-xl font-bold text-gray-800">Transactions</h2>
-      //       <p className="mt-4 text-gray-600">
-      //         Transaction history and management module will be implemented
-      //         here.
-      //       </p>
-      //     </div>
-      //   );
+      case "transactions":
+        return (
+          <Transaction />
+        );
       // case "analytics":
       //   return (
       //     <div className="p-6 bg-white rounded-lg shadow-sm">
