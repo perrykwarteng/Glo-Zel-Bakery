@@ -4,6 +4,7 @@ import cors from "cors";
 import { connectDB } from "./config/db.config.js";
 import paymentRoutes from "./routes/payment.route.js";
 import orderRoutes from "./routes/orders.route.js";
+import transactionRoutes from "./routes/transaction.route.js";
 
 await connectDB();
 dotenv.config();
@@ -15,6 +16,7 @@ const PORT = process.env.PORT || 8000;
 
 app.use("/api/payments", paymentRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/transactions", transactionRoutes);
 
 app.listen(PORT, () => {
   console.log(`The server is running on port http://localhost:${PORT}`);
