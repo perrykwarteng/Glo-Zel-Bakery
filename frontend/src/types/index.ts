@@ -37,12 +37,14 @@ export interface Order {
 }
 
 export interface Transaction {
-  id: string;
+  transactionId: string;
   orderId: string;
-  amount: number;
-  method: "cash" | "card" | "transfer";
-  status: "pending" | "completed" | "refunded";
   date: string;
+  customerName: string;
+  phone: string;
+  method: "cash" | "card" | "transfer" | "mobile_money";
+  amount: string; 
+  status: boolean;
 }
 
 export interface DashboardSummary {

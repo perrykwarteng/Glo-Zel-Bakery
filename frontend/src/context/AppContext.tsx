@@ -2,7 +2,6 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import {
   products,
   customers,
-  transactions,
   dashboardSummary,
   productSales,
 } from "../data/mockData.ts";
@@ -49,7 +48,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   const [allProducts] = useState<Product[]>(products);
   const [allCustomers] = useState<Customer[]>(customers);
   const [allOrders, setAllOrders] = useState<Order[]>([]);
-  const [allTransactions] = useState<Transaction[]>(transactions);
+  const [allTransactions, setAllTransactions] = useState<Transaction[]>([]);
   const [summary] = useState<DashboardSummary>(dashboardSummary);
   const [sales] = useState<ProductSales[]>(productSales);
 
@@ -80,6 +79,24 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     };
 
     fetchOrders();
+  }, []);
+
+  // Fetch transactions from backend API
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      try {
+        const res = await fetch(
+          "https://glo-zel-bakery.onrender.com/api/transactions/all-transaction"
+        );
+        if (!res.ok) throw new Error("Failed to fetch transactions");
+        const data: Transaction[] = await res.json();
+        setAllTransactions(data);
+      } catch (error) {
+        console.error("Error fetching transactions:", error);
+      }
+    };
+
+    fetchTransactions();
   }, []);
 
   const value: AppContextType = {
