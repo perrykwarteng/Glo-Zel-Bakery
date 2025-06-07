@@ -12,6 +12,8 @@ import VerifyPayment from "./pages/verifyPayment";
 import { AppProvider } from "./context/AppContext";
 import Layout from "./components/dashboard/Layout";
 import MainContent from "./pages/MainContent";
+import LoginPage from "./pages/Login";
+import TrackOrders from "./pages/TrackOrders";
 
 function AppContent() {
   const location = useLocation();
@@ -26,6 +28,8 @@ function AppContent() {
             <Route path="/" element={<HomePage />} />
             <Route path="/order" element={<Order />} />
             <Route path="/verify" element={<VerifyPayment />} />
+            <Route path="/track-order" element={<TrackOrders />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route
               path="/dashboard/*"
               element={
